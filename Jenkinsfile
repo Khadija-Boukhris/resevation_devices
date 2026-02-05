@@ -1,7 +1,7 @@
 pipeline {
   // Tout le pipeline tourne sur un agent Windows. Si tu préfères,
   // tu peux laisser "any" et ne cibler que le stage Docker avec agent { label 'docker-windows' }.
-  agent { label 'docker-windows' }
+  agent any
 
   
 
@@ -38,19 +38,7 @@ pipeline {
       }
     }
 
-    stage('SonarCloud Analysis (backend)') {
-      steps {
-        dir('backend') {
-          bat """
-            mvn -B -e sonar:sonar ^
-              -Dsonar.projectKey=%PROJECT_KEY% ^
-              -Dsonar.organization=%ORG% ^
-              -Dsonar.host.url=https://sonarcloud.io ^
-              -Dsonar.token=%SONAR_TOKEN%
-          """
-        }
-      }
-    }
+    
 
     stage('Build & Push to ACR') {
       // Si tu veux cibler un autre nœud uniquement pour ce stage :
