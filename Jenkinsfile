@@ -43,24 +43,7 @@ tools {
         }
       }
     }
-stage('Build & Push to ACR') {
-      // Si tu veux cibler un autre nœud uniquement pour ce stage :
-      // agent { label 'docker-windows' }
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'acr-jenkins',
-                                          usernameVariable: 'ACR_USER',
-                                          passwordVariable: 'ACR_PASS')]) {
-          bat """
-            echo %ACR_PASS% | docker login %ACR% -u %ACR_USER% --password-stdin
-            cd backend
-            docker build -t %ACR%/%IMAGE%:%TAG% .
-            docker push %ACR%/%IMAGE%:%TAG%
-            docker tag %ACR%/%IMAGE%:%TAG% %ACR%/%IMAGE%:latest
-            docker push %ACR%/%IMAGE%:latest
-          """
-        }
-      }
-    }
+
     
 
     
