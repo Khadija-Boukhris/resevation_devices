@@ -3,16 +3,10 @@ pipeline {
   // tu peux laisser "any" et ne cibler que le stage Docker avec agent { label 'docker-windows' }.
   agent { label 'docker-windows' }
 
-  tools {
-    jdk   'jdk17'
-    maven 'maven'
-  }
+  
 
   environment {
-    // ----- SonarCloud -----
-    ORG          = 'zinebmouman'                // organization SonarCloud
-    PROJECT_KEY  = 'resevation_devices'         // projectKey SonarCloud
-    SONAR_TOKEN  = credentials('SONAR_TOKEN3')  // Secret Text
+    
 
     MAVEN_OPTS   = '-Xmx1024m'
 
