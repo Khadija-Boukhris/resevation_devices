@@ -2,6 +2,10 @@ pipeline {
   // Tout le pipeline tourne sur un agent Windows. Si tu préfères,
   // tu peux laisser "any" et ne cibler que le stage Docker avec agent { label 'docker-windows' }.
   agent any
+tools {
+    jdk   'jdk17'
+    maven 'maven'
+  }
 
   
 
