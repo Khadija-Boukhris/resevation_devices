@@ -36,6 +36,21 @@ tools {
           bat 'mvn -B -U clean verify'
         }
       }
+
+  stage('SonarCloud Analysis (backend)') {
+      steps {
+        dir('backend') {
+          bat """
+            mvn -B -e sonar:sonar ^
+              -Dsonar.projectKey=%PROJECT_KEY% ^
+              -Dsonar.organization=%ORG% ^
+              -Dsonar.host.url=https://sonarcloud.io ^
+              -Dsonar.token=%SONAR_TOKEN%
+          """
+        }
+      }
+    }
+      
       post {
         always {
           junit allowEmptyResults: true, testResults: 'backend/target/surefire-reports/*.xml'
