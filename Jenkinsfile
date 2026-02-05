@@ -1,7 +1,9 @@
 pipeline {
   // Tout le pipeline tourne sur un agent Windows. Si tu préfères,
   // tu peux laisser "any" et ne cibler que le stage Docker avec agent { label 'docker-windows' }.
-  agent any
+  //agent any
+  agent { label 'docker-windows' }
+
 tools {
     jdk   'jdk17'
     maven 'maven'
@@ -41,7 +43,24 @@ tools {
         }
       }
     }
-
+stage('Build & Push to ACR') {
+      // Si tu veux cibler un autre nœud uniquement pour ce stage :
+      // agent { label 'docker-windows' }
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'acr-jenkins',
+                                          usernameVariable: 'ACR_USER',
+                                          passwordVariable: 'ACR_PASS')]) {
+          bat """
+            echo %ACR_PASS% | docker login %ACR% -u %ACR_USER% --password-stdin
+            cd backend
+            docker build -t %ACR%/%IMAGE%:%TAG% .
+            docker push %ACR%/%IMAGE%:%TAG%
+            docker tag %ACR%/%IMAGE%:%TAG% %ACR%/%IMAGE%:latest
+            docker push %ACR%/%IMAGE%:latest
+          """
+        }
+      }
+    }
     
 
     
