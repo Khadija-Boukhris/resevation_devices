@@ -37,7 +37,17 @@ tools {
         }
       }
 
-  stage('SonarCloud Analysis (backend)') {
+  
+      
+      post {
+        always {
+          junit allowEmptyResults: true, testResults: 'backend/target/surefire-reports/*.xml'
+          archiveArtifacts artifacts: 'backend/target/*.jar', fingerprint: true
+        }
+      }
+    }
+      
+      stage('SonarCloud Analysis (backend)') {
       steps {
         dir('backend') {
           bat """
@@ -50,16 +60,6 @@ tools {
         }
       }
     }
-      
-      post {
-        always {
-          junit allowEmptyResults: true, testResults: 'backend/target/surefire-reports/*.xml'
-          archiveArtifacts artifacts: 'backend/target/*.jar', fingerprint: true
-        }
-      }
-    }
-
-    
 
     
   }
