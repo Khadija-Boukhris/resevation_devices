@@ -26,7 +26,7 @@ tools {
 
     stage('Checkout') {
       steps {
-        git branch: 'main', url: 'https://github.com/zinebmouman/resevation_devices.git'
+        git branch: 'main', url: 'https://github.com/Khadija-Boukhris/resevation_devices.git'
       }
     }
 
